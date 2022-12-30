@@ -4,6 +4,8 @@
 
 # CD/CI Tutorial Sample Application
 
+# This is forked to my repository and renamed with python-flask-github-action
+
 ## Description
 
 This sample Python REST API application was written for a tutorial on implementing Continuous Integration and Delivery pipelines.
