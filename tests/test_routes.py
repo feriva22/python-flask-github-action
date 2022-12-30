@@ -17,15 +17,17 @@ TEST_DB = os.path.join(BASE_DIR, 'test.db')
 class BasicTests(unittest.TestCase):
 
     def setUp(self):
-        app.config['SQLALCHEMY_DATABASE_URI'] = \
-            os.environ.get('TEST_DATABASE_URL') or \
-            'sqlite:///' + TEST_DB
-        self.app = app.test_client()
-        db.drop_all()
-        db.create_all()
+        with app.app_context():
+            app.config['SQLALCHEMY_DATABASE_URI'] = \
+                os.environ.get('TEST_DATABASE_URL') or \
+                'sqlite:///' + TEST_DB
+            self.app = app.test_client()
+            db.drop_all()
+            db.create_all()
 
     def tearDown(self):
-        pass
+        with app.app_context():
+            pass
 
     def test_home(self):
         with app.app_context():
