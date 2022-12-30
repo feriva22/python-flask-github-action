@@ -28,27 +28,30 @@ class BasicTests(unittest.TestCase):
         pass
 
     def test_home(self):
-        response = self.app.get('/', follow_redirects=True)
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.mimetype, 'application/json')
-        body = json.loads(response.data)
-        self.assertEqual(body['status'], 'ok')
+        with app.app_context():
+            response = self.app.get('/', follow_redirects=True)
+            self.assertEqual(response.status_code, 200)
+            self.assertEqual(response.mimetype, 'application/json')
+            body = json.loads(response.data)
+            self.assertEqual(body['status'], 'ok')
 
     def test_menu_empty(self):
-        response = self.app.get('/menu', follow_redirects=True)
-        self.assertEqual(response.status_code, 404)
+        with app.app_context():
+            response = self.app.get('/menu', follow_redirects=True)
+            self.assertEqual(response.status_code, 404)
 
     def test_menu_item(self):
-        test_name = "test"
-        test_item = Menu(name=test_name)
-        db.session.add(test_item)
-        db.session.commit()
-        response = self.app.get('/menu', follow_redirects=True)
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.mimetype, 'application/json')
-        body = json.loads(response.data)
-        self.assertTrue('today_special' in body)
-        self.assertEqual(body['today_special'], test_name)
+        with app.app_context():
+            test_name = "test"
+            test_item = Menu(name=test_name)
+            db.session.add(test_item)
+            db.session.commit()
+            response = self.app.get('/menu', follow_redirects=True)
+            self.assertEqual(response.status_code, 200)
+            self.assertEqual(response.mimetype, 'application/json')
+            body = json.loads(response.data)
+            self.assertTrue('today_special' in body)
+            self.assertEqual(body['today_special'], test_name)
 
 if __name__ == "__main__":
     unittest.main()
