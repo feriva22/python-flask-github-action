@@ -61,7 +61,6 @@ jobs:
     name: Build and push Docker image to Docker Hub
     # ...but only when a `release` is `published`
     #if: github.event_name == 'release' # && github.event.action == 'published'
-    if: github.event.action == 'published'
     runs-on: ubuntu-latest
     steps:
       - name: Check out the repo
